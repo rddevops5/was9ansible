@@ -1,0 +1,4 @@
+---
+- hosts: was9-hosts
+  roles:
+  - { role: WAS9, become: true, become_user: wasadmin, become_method: su }

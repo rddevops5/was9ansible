@@ -1,0 +1,4 @@
+---
+- hosts: db2-hosts
+  roles:
+  - { role: db2}

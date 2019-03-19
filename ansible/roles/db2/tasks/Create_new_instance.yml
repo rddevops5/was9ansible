@@ -1,0 +1,5 @@
+---
+- include_vars: vars/db2_vars.yml
+
+- name: "Create new DB instance"
+  command: "{{db2icrt}} -u db2fenc1 {{INSTANCE}}"

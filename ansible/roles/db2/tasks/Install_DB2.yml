@@ -1,0 +1,5 @@
+---
+- include_vars: vars/db2_vars.yml
+
+- name: "Run DB2 installation"
+  command: "{{db2_install}} -y -b {{INSTALL_DB2_DIR}} -l {{INSTALL_DB2_LOG_FILE}}"

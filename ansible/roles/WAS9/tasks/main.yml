@@ -1,0 +1,14 @@
+---
+- include_tasks: Perform_Prerequisites.yml
+
+- include_tasks: Download_and_Extract.yml
+
+- include_tasks: Install_IIM.yml  
+  
+- include_tasks: Install_WAS9_and_SDK.yml  
+  
+- include_tasks: Install_FP09.yml  
+  
+- include_tasks: Post_Install_Tasks.yml  
+
+- include_tasks: Perform_Cleanup.yml

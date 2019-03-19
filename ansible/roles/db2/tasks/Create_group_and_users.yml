@@ -1,0 +1,18 @@
+---
+- include_vars: vars/db2_vars.yml
+
+- name: "Create the {{ db2_admin_group }} group if it doesnot exists"
+  group:
+    name={{ item }}
+    state=present
+  with_items:
+  - "{{ db2_admin_group }}"
+  
+- name: "Create DB2 users"
+  user:
+    name={{ item }}
+    state=present
+    group={{ db2_admin_group }}
+    shell=/bin/bash
+  with_items:
+  - "{{ db2_users }}"

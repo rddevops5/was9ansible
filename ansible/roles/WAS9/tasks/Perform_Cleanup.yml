@@ -1,0 +1,9 @@
+---
+- include_vars: vars/was9_var.yml
+
+- name: "Remove all softwares"
+  file: 
+    path: "{{SOFTWARE_REPOSITORY}}/{{item}}"
+    state: absent
+  with_items:
+    - "{{ALL_COMPONENTS}}"

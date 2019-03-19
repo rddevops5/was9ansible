@@ -1,0 +1,7 @@
+---
+- include_vars: vars/db2_vars.yml
+
+- name: "Creating DB2 databases"
+  command: "su - db2inst1 -c 'db2 create database {{item}}'"
+  with_items:
+    - "{{ALL_COMPONENTS}}"

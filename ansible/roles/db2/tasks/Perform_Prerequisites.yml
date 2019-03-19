@@ -1,0 +1,71 @@
+---
+- include_vars: vars/db2_vars.yml
+    
+- name: "FIX nosuid entry if exists in /etc/fstab"
+  command: sed -i '/\bdb2home\b/ s/\bnosuid,\b//g' /etc/fstab
+  
+- name: "perform the db2prereqcheck command"
+  command: "{{expc_dir}}/db2prereqcheck -v 11.1.0.0 -i -o {{PREREQ_LOG_FILE}}"
+
+- name: "Check for /var available space"
+  shell: "grep -i DBT3571E {{PREREQ_LOG_FILE}} | wc -l"
+  register: check_var_disk_space
+  
+- name: Set the fact values for /var check"
+  set_fact:    
+    count_var_mount_point: "{{check_var_disk_space.stdout_lines[0]}}"
+
+- name: "Check for missing libraries if any"
+  shell: "grep DBT3514W {{PREREQ_LOG_FILE}} | grep -v libstdc++.so.6| grep -v libpam.so | wc -l"
+  register: count_missing_libraries_lines
+
+- name: Set the fact values for missing libraries"
+  set_fact:    
+    count_missing_libraries: "{{count_missing_libraries_lines.stdout_lines[0]}}"
+    
+- name: "Check for other failing dependencies if any"
+  shell: "grep -i failed {{PREREQ_LOG_FILE}} | grep -v DBT3507E | grep -v DBT3514W | wc -l"
+  register: count_missing_dependencies_lines
+
+- name: Set the fact values for other missing dependencies"
+  set_fact:    
+    count_missing_dependencies: "{{count_missing_dependencies_lines.stdout_lines[0]}}"
+    
+- name: "Check for missing packages if any"
+  shell: "grep DBT3507E {{PREREQ_LOG_FILE}} | wc -l"
+  register: count_missing_packages_lines
+    
+- name: Set the fact values for missing packages"
+  set_fact:    
+    count_missing_packages: "{{count_missing_packages_lines.stdout_lines[0]}}"
+
+- debug: 
+    msg: "/var does not have enough space - Required space: 2GB"
+  when: count_var_mount_point | int > 0
+
+- debug: 
+    msg: count of missing libraries is/are "{{count_missing_libraries }}"
+    
+- debug: 
+    msg: count of missing dependencies is/are "{{count_missing_dependencies}}"
+    
+- debug: 
+    msg: count of missing packages is/are "{{count_missing_packages }}"    
+    
+- name: "Prepare for install missing packages"
+  template:
+    src: prepare_install_packages.sh.j2
+    dest: /tmp/prepare_install_packages.sh
+    owner: root
+    group: root
+    mode: 0755
+    backup: yes
+  when: count_missing_packages | int > 0
+    
+- name: "Generate the missing packages information"
+  command: "sh /tmp/prepare_install_packages.sh"
+  when: count_missing_packages | int > 0
+  
+#- name: "Install missing packages using yum"
+#  command: "sh /tmp/install_missing_packages.sh"
+#  when: count_missing_packages | int > 0

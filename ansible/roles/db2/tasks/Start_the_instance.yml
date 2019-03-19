@@ -1,0 +1,5 @@
+---
+- include_vars: vars/db2_vars.yml
+    
+- name: "Start DB2 instance"
+  command: "su - db2inst1 -c db2start"

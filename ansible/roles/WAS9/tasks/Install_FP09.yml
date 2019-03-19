@@ -1,0 +1,18 @@
+---
+- include_vars: vars/was9_var.yml
+
+- name: "Run slient install for FP09"
+  command: "{{imcl}} install com.ibm.websphere.BASE.v90 -repositories /{{SOFTWARE_REPOSITORY}}/FP09 -installationDirectory  {{INSTALL_FP09_DIR}} -sharedResourcesDirectory {{IBM_SHARED_DIR}} -acceptLicense -showVerboseProgress -log {{INSTALL_FP09_LOG_FILE}}"
+      
+- name: "Validate Installation of FP09"
+  command: '{{imcl_dir}}/imcl listInstalledPackages'
+  register: RESULT_FP09_INSTALLATION
+  
+- name: "Check FP09 Installation Status" 
+  set_fact:
+    FP09_INSTALLATION_STATUS: "{{RESULT_FP09_INSTALLATION.stdout_lines[2]}}"
+
+- name: "Set FP09 Presence TRUE/FALSE"
+  set_fact:
+    FP09_INSTALLATION_FLAG: "TRUE"
+  when: FP09_INSTALLATION_STATUS.find("BASE.v90_9.0.9") != -1 

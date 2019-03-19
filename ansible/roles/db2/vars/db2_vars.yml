@@ -1,0 +1,44 @@
+---
+ALL_PRODUCTS: ["DB2"]
+
+ALL_COMPONENTS: ["AAS", "CUST", "BULKER", "ENGINE", "DIR", "DBRD", "TPSUI", "PWH", "PWHH", "GDPR", "ACCT"]
+
+
+########################################################################
+SOFTWARE_REPOSITORY: "/opt/softwares"
+
+INSTALL_PARENT_DIR: "/opt/IBM/DB2"
+CREATE_DIR_DURING_INSTALL: ["V11.1", "InstallLogs", "tmp_download_dir"]
+tmp_download_dir: "{{INSTALL_PARENT_DIR}}/tmp_download_dir"
+
+INSTALL_DB2_DIR: "{{INSTALL_PARENT_DIR}}/V11.1"
+
+INSTALL_LOG_DIR: "{{INSTALL_PARENT_DIR}}/InstallLogs"
+INSTALL_DB2_LOG_FILE: "{{INSTALL_LOG_DIR}}/INSTALL_DB2.log"
+
+PREREQ_LOG_FILE: "{{INSTALL_LOG_DIR}}/db2prereqcheck.log"
+
+########################################################################
+
+ARTIFACTORY_URL: "https://maven.etb.tieto.com/artifactory/fs-pcm-misc"
+DB2_URL: "{{ARTIFACTORY_URL}}/IBM/Database/DB2/11.1/"
+DB2_FILES: "v11.1_linuxx64_expc.tar"
+
+########################################################################
+
+expc_dir: "{{SOFTWARE_REPOSITORY}}/DB2/expc"
+db2_install: "{{expc_dir}}/db2_install"
+
+########################################################################
+db2_admin_group: "db2iadm1"
+db2_users: ["db2inst1","db2fenc1"]
+
+INSTANCE: "db2inst1"
+INSTANCE_DIR: "{{INSTALL_PARENT_DIR}}/V11.1/instance/"
+
+db2icrt: "{{INSTANCE_DIR}}/db2icrt"
+
+db2start: "/home/db2inst1/sqllib/adm/db2start"
+
+########################################################################
+find_missing_packages: "cat /tmp/db2prereqcheck.log | grep 'DBT3507E'"

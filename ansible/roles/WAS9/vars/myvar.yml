@@ -1,0 +1,47 @@
+---
+ALL_COMPONENTS: ["SDK","WAS9","FP09","IM"]
+BASE_COMPONENTS: ["WAS9","FP09","IM"]
+PROFILES: ["AppSrv01","AppSrv02"]
+
+########################################################################
+INSTALL_PARENT_DIR: "/opt/tools/IBM"
+CREATE_DIR_DURING_INSTALL: ["WebSphere/AppServer/", "InstallationManager/", "IMShared", "InstallLogs", "tmp_download_dir"]
+
+SOFTWARE_REPOSITORY: "/opt/softwares"
+IBM_SHARED_DIR: "{{INSTALL_PARENT_DIR}}/IMShared"
+
+tmp_download_dir: "{{INSTALL_PARENT_DIR}}/tmp_download_dir"
+
+INSTALL_IIM_DIR: "{{INSTALL_PARENT_DIR}}/InstallationManager"
+INSTALL_WAS9_DIR: "{{INSTALL_PARENT_DIR}}/WebSphere/AppServer"
+INSTALL_FP09_DIR: "{{INSTALL_WAS9_DIR}}"
+
+INSTALL_LOG_DIR: "{{INSTALL_PARENT_DIR}}/InstallLogs"
+INSTALL_IIM_LOG_FILE: "{{INSTALL_LOG_DIR}}/INSTALL_IIM.log"
+INSTALL_WAS9_LOG_FILE: "{{INSTALL_LOG_DIR}}/INSTALL_WAS9.log"
+INSTALL_FP09_LOG_FILE: "{{INSTALL_LOG_DIR}}/INSTALL_FP09.log"
+
+
+########################################################################
+
+ARTIFACTORY_URL: "https://maven.etb.tieto.com/artifactory/fs-pcm-misc"
+SDK_URL: "{{ARTIFACTORY_URL}}/IBM/AppServer/WebSphere/WAS9.0/SDK/"
+WAS9_URL: "{{ARTIFACTORY_URL}}/IBM/AppServer/WebSphere/WAS9.0/WAS/"
+FP09_URL: "{{ARTIFACTORY_URL}}/IBM/AppServer/WebSphere/WAS9.0/FP9/"
+IM_URL: "{{ARTIFACTORY_URL}}/IBM/AppServer/WebSphere/WAS9.0/IM/"
+SDK_FILES: ["was.repo.9000.java8_part1.zip","was.repo.9000.java8_part2.zip","was.repo.9000.java8_part3.zip"]
+WAS9_FILES: "was.repo.9000.base.zip"
+FP09_FILES: "9.0.0-WS-WAS-FP009.zip"
+IM_FILES: "agent.installer.lnx.gtk.x86_64_1.8.5.zip"
+########################################################################
+
+imcl_dir: "{{INSTALL_PARENT_DIR}}/InstallationManager/eclipse/tools/"
+imcl: "{{SOFTWARE_REPOSITORY}}/IM/tools/imcl"
+
+DOWNLOAD_ALREADY_COMPLETE_FLAG: "FALSE"
+DOWNLOAD_STATUS_FLAG: "FALSE"
+IIM_INSTALLATION_FLAG: "FALSE"
+WAS9_INSTALLATION_FLAG: "FALSE"
+FP09_INSTALLATION_FLAG: "FALSE"
+
+########################################################################

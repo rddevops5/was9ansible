@@ -1,0 +1,38 @@
+---
+- include_vars: vars/was9_var.yml
+
+- name: "Download SDK"
+  get_url:
+    url: "{{SDK_URL}}{{item}}"
+    dest: "{{SOFTWARE_REPOSITORY}}/SDK"
+    tmp_dest: "{{tmp_download_dir}}"
+  with_items:
+    - "{{SDK_FILES}}"
+ 
+- name: "Download remaining installer."
+  get_url:
+    url: "{{hostvars[inventory_hostname][item+'_URL']+hostvars[inventory_hostname][item+'_FILES']}}"
+    dest: "{{SOFTWARE_REPOSITORY}}/{{item}}"
+    tmp_dest: "{{tmp_download_dir}}"
+  with_items:
+    - "{{BASE_COMPONENTS}}"
+   
+- name: "extract SDK"
+  unarchive:
+    src: "{{SOFTWARE_REPOSITORY}}/SDK/{{item}}"
+    dest: "{{SOFTWARE_REPOSITORY}}/SDK"
+    copy: no
+  with_items:
+    - "{{SDK_FILES}}"
+    
+- name: "download & extract remaining installer"
+  unarchive:
+    src: "{{SOFTWARE_REPOSITORY}}/{{item}}/{{hostvars[inventory_hostname][item+'_FILES']}}"
+    dest: "{{SOFTWARE_REPOSITORY}}/{{item}}"
+    copy: no
+  with_items:
+    - "{{BASE_COMPONENTS}}"
+    
+- name: "Set download status TRUE/FALSE"
+  set_fact:
+    DOWNLOAD_STATUS_FLAG: "TRUE"

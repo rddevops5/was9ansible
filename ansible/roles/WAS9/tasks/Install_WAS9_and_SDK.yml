@@ -1,0 +1,18 @@
+---
+- include_vars: vars/was9_var.yml
+
+- name: "Run slient install for WAS9 & SDK"
+  command: "{{imcl}} install com.ibm.websphere.BASE.v90 com.ibm.java.jdk.v8 -repositories /{{SOFTWARE_REPOSITORY}}/WAS9,{{SOFTWARE_REPOSITORY}}/SDK/disk1 -installationDirectory  {{INSTALL_WAS9_DIR}} -sharedResourcesDirectory {{IBM_SHARED_DIR}} -acceptLicense -showVerboseProgress -log {{INSTALL_WAS9_LOG_FILE}}"
+      
+- name: "Validate Installation of WAS"
+  command: '{{imcl_dir}}/imcl listInstalledPackages'
+  register: RESULT_WAS_INSTALLATION
+  
+- name: "Check WAS Installation Status" 
+  set_fact:
+    WAS9_INSTALLATION_STATUS: "{{RESULT_WAS_INSTALLATION.stdout_lines[2]}}"
+
+- name: "Set WAS Presence TRUE/FALSE"
+  set_fact:
+    WAS9_INSTALLATION_FLAG: "TRUE"
+  when: WAS9_INSTALLATION_STATUS.find("com.ibm.websphere.BASE") != -1 

@@ -1,0 +1,4 @@
+echo "yum install -y telnet" >/tmp/temp
+grep -i DBT3507E {{PREREQ_LOG_FILE}} | cut -d ':' -f2 |cut -d '.' -f1 >>/tmp/temp
+paste -s --delimiters="" /tmp/temp > /tmp/install_missing_packages.sh
+

@@ -1,0 +1,18 @@
+---
+- include_vars: vars/was9_var.yml
+
+- name: "Run slient install for IIM"
+  command: "{{imcl}} install com.ibm.cic.agent -repositories {{SOFTWARE_REPOSITORY}}/IM/repository.config -installationDirectory {{INSTALL_IIM_DIR}} -acceptLicense -log {{INSTALL_IIM_LOG_FILE}}"  
+    
+- name: "Validate Installation of IIM"
+  command: '{{imcl_dir}}/imcl listInstalledPackages'
+  register: RESULT_IIM_INSTALLATION
+  
+- name: "Check IIM Installation Status" 
+  set_fact:
+    IIM_INSTALLATION_STATUS: "{{RESULT_IIM_INSTALLATION.stdout_lines[0]}}"
+
+- name: "Set IIM Presence TRUE/FALSE"
+  set_fact:
+    IIM_INSTALLATION_FLAG: "TRUE"
+  when: IIM_INSTALLATION_STATUS.find("com.ibm.cic.agent") != -1  

@@ -1,0 +1,14 @@
+---
+- include_tasks: Create_directories.yml
+
+- include_tasks: Create_group_and_users.yml
+
+- include_tasks: Download_and_Extract.yml
+
+- include_tasks: Perform_Prerequisites.yml
+
+- include_tasks: Install_DB2.yml
+
+- include_tasks: Create_new_instance.yml
+
+- include_tasks: Start_the_instance.yml

@@ -1,0 +1,23 @@
+---
+- include_vars: vars/db2_vars.yml
+ 
+- name: "Download DB2 Installer"
+  get_url:
+    url: "{{hostvars[inventory_hostname][item+'_URL']+hostvars[inventory_hostname][item+'_FILES']}}"
+    dest: "{{SOFTWARE_REPOSITORY}}/{{item}}"
+    tmp_dest: "{{tmp_download_dir}}"
+  with_items:
+    - "{{ALL_PRODUCTS}}"
+
+   
+- name: "Extract DB2 installer"
+  unarchive:
+    src: "{{SOFTWARE_REPOSITORY}}/{{item}}/{{hostvars[inventory_hostname][item+'_FILES']}}"
+    dest: "{{SOFTWARE_REPOSITORY}}/{{item}}"
+    copy: no
+  with_items:
+    - "{{ALL_PRODUCTS}}"
+    
+- name: "Set download status TRUE/FALSE"
+  set_fact:
+    DOWNLOAD_STATUS_FLAG: "TRUE"
