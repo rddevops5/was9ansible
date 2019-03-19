@@ -7,7 +7,7 @@ final String PCM_TOOLS_SETUP_IMAGE = "pcm-tools-setup-using-ansible"
 final String basedir = "/ansible/playbooks"
 final boolean DELIVER = (env.JOB_NAME as String).endsWith("-deliver")
 
-node('automation') {
+node('any') {
     docker.withRegistry(REGISTRY_URL, REGISTRY_CREDENTIALS) {
 
 		stage('Prepare') {
