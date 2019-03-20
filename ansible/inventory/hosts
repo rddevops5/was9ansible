@@ -1,5 +1,5 @@
 [was9-hosts]
-localhost
+192.168.56.104=2
 
 [db2-hosts]
-localhost
+192.168.56.102
